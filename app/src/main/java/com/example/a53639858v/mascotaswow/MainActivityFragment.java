@@ -3,7 +3,6 @@ package com.example.a53639858v.mascotaswow;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,6 +20,8 @@ public class MainActivityFragment extends Fragment implements AsyncResponse {
     ListView lvPets;
     private ArrayList<String> items;
     private ArrayAdapter<String> adapter;
+    private ArrayList<Pet> pets;
+    private String jsonPets;
 
     /* http://media.blizzard.com/wow/icons/18/inv_helm_mail_raidhunter_q_01.jpg
 http://media.blizzard.com/wow/icons/36/inv_helm_mail_raidhunter_q_01.jpg
@@ -55,6 +56,13 @@ http://media.blizzard.com/wow/icons/56/inv_helm_mail_raidhunter_q_01.jpg */
         items.add("Petaza");
         items.add("SUPER PETAZAAA DE LA PARRA MADREEE MIAAA");
         items.add("Que esta pasando?");
+        PetsAPI api = new PetsAPI();
+
+        //ArrayList<Pet> pets = api.pasarPets(jsonPets);
+
+       /* for (Pet p : pets) {
+            items.add(p.getName());
+        }*/
 
         adapter = new ArrayAdapter<>(
                 getContext(),
@@ -81,10 +89,20 @@ http://media.blizzard.com/wow/icons/56/inv_helm_mail_raidhunter_q_01.jpg */
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        //refresh();
+    }
+
     private void refresh() {
         DownloadPetsTask task = new DownloadPetsTask();
         task.execute();
     }
 
 
+    @Override
+    public void processFinish(String jsonPets) {
+        this.jsonPets = jsonPets;
+    }
 }

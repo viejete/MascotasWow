@@ -11,9 +11,9 @@ public class Pet implements Serializable {
     private String family;
     private String icon;
     private Stats stats;
-    private ArrayList<String> strongAgainst;
+    private String strongAgainst;
     private int typeId;
-    private ArrayList<String> weakAgainst;
+    private String weakAgainst;
 
 
     public boolean isCanBattle() {
@@ -64,11 +64,11 @@ public class Pet implements Serializable {
         this.stats = stats;
     }
 
-    public ArrayList<String> getStrongAgainst() {
+    public String getStrongAgainst() {
         return strongAgainst;
     }
 
-    public void setStrongAgainst(ArrayList<String> strongAgainst) {
+    public void setStrongAgainst(String strongAgainst) {
         this.strongAgainst = strongAgainst;
     }
 
@@ -80,11 +80,11 @@ public class Pet implements Serializable {
         this.typeId = typeId;
     }
 
-    public ArrayList<String> getWeakAgainst() {
+    public String getWeakAgainst() {
         return weakAgainst;
     }
 
-    public void setWeakAgainst(ArrayList<String> weakAgainst) {
+    public void setWeakAgainst(String weakAgainst) {
         this.weakAgainst = weakAgainst;
     }
 }
