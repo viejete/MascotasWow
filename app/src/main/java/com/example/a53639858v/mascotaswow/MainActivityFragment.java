@@ -3,6 +3,7 @@ package com.example.a53639858v.mascotaswow;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,12 +15,16 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-public class MainActivityFragment extends Fragment {
+public class MainActivityFragment extends Fragment implements AsyncResponse {
 
     private View view;
     ListView lvPets;
     private ArrayList<String> items;
     private ArrayAdapter<String> adapter;
+
+    /* http://media.blizzard.com/wow/icons/18/inv_helm_mail_raidhunter_q_01.jpg
+http://media.blizzard.com/wow/icons/36/inv_helm_mail_raidhunter_q_01.jpg
+http://media.blizzard.com/wow/icons/56/inv_helm_mail_raidhunter_q_01.jpg */
 
 
 
@@ -77,6 +82,9 @@ public class MainActivityFragment extends Fragment {
     }
 
     private void refresh() {
-
+        DownloadPetsTask task = new DownloadPetsTask();
+        task.execute();
     }
+
+
 }
