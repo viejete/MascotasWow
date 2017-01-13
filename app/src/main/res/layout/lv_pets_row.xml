@@ -7,9 +7,11 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/tvPet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tvPet"
+        style="@style/Base.TextAppearance.AppCompat.Medium"
+        android:minHeight="?android:attr/listPreferredItemHeight"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent" />
 </android.support.constraint.ConstraintLayout>

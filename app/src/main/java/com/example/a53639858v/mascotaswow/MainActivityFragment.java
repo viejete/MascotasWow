@@ -18,10 +18,12 @@ public class MainActivityFragment extends Fragment implements AsyncResponse {
 
     private View view;
     ListView lvPets;
-    private ArrayList<String> items;
+    private ArrayList<String> items = new ArrayList<>();
     private ArrayAdapter<String> adapter;
     private ArrayList<Pet> pets;
     private String jsonPets;
+    private DownloadPetsTask task = new DownloadPetsTask();
+    PetsAPI api = new PetsAPI();
 
     /* http://media.blizzard.com/wow/icons/18/inv_helm_mail_raidhunter_q_01.jpg
 http://media.blizzard.com/wow/icons/36/inv_helm_mail_raidhunter_q_01.jpg
@@ -36,6 +38,8 @@ http://media.blizzard.com/wow/icons/56/inv_helm_mail_raidhunter_q_01.jpg */
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        task.delegate = this;
+
     }
 
     @Override
@@ -51,25 +55,13 @@ http://media.blizzard.com/wow/icons/56/inv_helm_mail_raidhunter_q_01.jpg */
 
         lvPets = (ListView) view.findViewById(R.id.lvPets);
 
-        items = new ArrayList<>();
-
-        items.add("Petaza");
-        items.add("SUPER PETAZAAA DE LA PARRA MADREEE MIAAA");
-        items.add("Que esta pasando?");
-        PetsAPI api = new PetsAPI();
-
-        //ArrayList<Pet> pets = api.pasarPets(jsonPets);
-
-       /* for (Pet p : pets) {
-            items.add(p.getName());
-        }*/
-
         adapter = new ArrayAdapter<>(
                 getContext(),
                 R.layout.lv_pets_row,
                 R.id.tvPet,
                 items
         );
+
         lvPets.setAdapter(adapter);
 
         return view;
@@ -92,11 +84,10 @@ http://media.blizzard.com/wow/icons/56/inv_helm_mail_raidhunter_q_01.jpg */
     @Override
     public void onStart() {
         super.onStart();
-        //refresh();
+        refresh();
     }
 
     private void refresh() {
-        DownloadPetsTask task = new DownloadPetsTask();
         task.execute();
     }
 
@@ -104,5 +95,10 @@ http://media.blizzard.com/wow/icons/56/inv_helm_mail_raidhunter_q_01.jpg */
     @Override
     public void processFinish(String jsonPets) {
         this.jsonPets = jsonPets;
+        pets = api.pasarPets(jsonPets);
+        for (Pet p : pets) {
+            items.add(p.getName());
+        }
+        adapter.notifyDataSetChanged();
     }
 }
