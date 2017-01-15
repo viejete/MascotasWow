@@ -13,5 +13,6 @@
         style="@style/Base.TextAppearance.AppCompat.Medium"
         android:minHeight="?android:attr/listPreferredItemHeight"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:gravity="center_vertical"/>
 </android.support.constraint.ConstraintLayout>

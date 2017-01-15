@@ -1,5 +1,8 @@
 package com.example.a53639858v.mascotaswow;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -22,12 +25,11 @@ public class MainActivityFragment extends Fragment implements AsyncResponse {
     private ArrayAdapter<String> adapter;
     private ArrayList<Pet> pets;
     private String jsonPets;
-    private DownloadPetsTask task = new DownloadPetsTask();
     PetsAPI api = new PetsAPI();
 
     /* http://media.blizzard.com/wow/icons/18/inv_helm_mail_raidhunter_q_01.jpg
 http://media.blizzard.com/wow/icons/36/inv_helm_mail_raidhunter_q_01.jpg
-http://media.blizzard.com/wow/icons/56/inv_helm_mail_raidhunter_q_01.jpg */
+http://media.blizzard.com/wow/icons/56/ability_mount_whitetiger.jpg */
 
 
 
@@ -38,8 +40,6 @@ http://media.blizzard.com/wow/icons/56/inv_helm_mail_raidhunter_q_01.jpg */
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        task.delegate = this;
-
     }
 
     @Override
@@ -75,8 +75,11 @@ http://media.blizzard.com/wow/icons/56/inv_helm_mail_raidhunter_q_01.jpg */
         if (id == R.id.refresh_action) {
             refresh();
             return true;
+        } else if (id == R.id.action_settings) {
+            Intent i = new Intent(getContext(), SettingsActivity.class);
+            startActivity(i);
+            return true;
         }
-
 
         return super.onOptionsItemSelected(item);
     }
@@ -88,7 +91,9 @@ http://media.blizzard.com/wow/icons/56/inv_helm_mail_raidhunter_q_01.jpg */
     }
 
     private void refresh() {
-        task.execute();
+        DownloadPetsTask task = new DownloadPetsTask();
+        task.delegate = this;
+        task.execute(getContext());
     }
 
 
@@ -100,5 +105,24 @@ http://media.blizzard.com/wow/icons/56/inv_helm_mail_raidhunter_q_01.jpg */
             items.add(p.getName());
         }
         adapter.notifyDataSetChanged();
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String nombre = preferences.getString("buscador_nombre","nombre");
+        String nombreIgual = "";
+
+        if (!nombre.equalsIgnoreCase(nombre)) {
+            for (String s : items) {
+                if (nombre.equalsIgnoreCase(s)) {
+                    items.clear();
+                    nombreIgual = s;
+                    break;
+                }
+
+            }
+            items.add(nombreIgual);
+        }
+
+        adapter.notifyDataSetChanged();
+
     }
 }

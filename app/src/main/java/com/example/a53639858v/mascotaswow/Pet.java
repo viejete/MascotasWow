@@ -60,7 +60,7 @@ public class Pet implements Serializable {
         return stats;
     }
 
-    public void setStats(Stats stats) {
+    public void setStats(Stats  stats) {
         this.stats = stats;
     }
 
