@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,9 +23,9 @@ public class MainActivityFragment extends Fragment implements AsyncResponse {
     private View view;
     ListView lvPets;
     private ArrayList<String> items = new ArrayList<>();
-    private ArrayAdapter<String> adapter;
     private ArrayList<Pet> pets;
     private String jsonPets;
+    private PetAdapter petAdapter;
     PetsAPI api = new PetsAPI();
 
     /* http://media.blizzard.com/wow/icons/18/inv_helm_mail_raidhunter_q_01.jpg
@@ -40,6 +41,7 @@ http://media.blizzard.com/wow/icons/56/ability_mount_whitetiger.jpg */
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
     }
 
     @Override
@@ -55,14 +57,18 @@ http://media.blizzard.com/wow/icons/56/ability_mount_whitetiger.jpg */
 
         lvPets = (ListView) view.findViewById(R.id.lvPets);
 
-        adapter = new ArrayAdapter<>(
+        /*adapter = new ArrayAdapter<>(
                 getContext(),
                 R.layout.lv_pets_row,
                 R.id.tvPet,
                 items
-        );
+        );*/
 
-        lvPets.setAdapter(adapter);
+        pets = new ArrayList<>();
+        petAdapter = new PetAdapter(getContext() , R.layout.lv_pets_row , pets);
+        lvPets.setAdapter(petAdapter);
+
+        //lvPets.setAdapter(adapter);
 
         return view;
     }
@@ -79,6 +85,8 @@ http://media.blizzard.com/wow/icons/56/ability_mount_whitetiger.jpg */
             Intent i = new Intent(getContext(), SettingsActivity.class);
             startActivity(i);
             return true;
+        } else if (id == R.id.search_action) {
+            refreshPreferences();
         }
 
         return super.onOptionsItemSelected(item);
@@ -87,7 +95,29 @@ http://media.blizzard.com/wow/icons/56/ability_mount_whitetiger.jpg */
     @Override
     public void onStart() {
         super.onStart();
-        refresh();
+        //refresh();
+    }
+
+    private void refreshPreferences() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String nombre = preferences.getString("buscador_nombre" , "nombre");
+        Log.i("Nombre pet: " , nombre);
+        String nombreIgual = "";
+
+        if (!nombre.equalsIgnoreCase("nombre")) {
+            Log.i("Entra aqui -> " , "si");
+            for (String s : items) {
+                if (nombre.equalsIgnoreCase(s)) {
+                    nombreIgual = s;
+                    Log.i("Nombre igual: " , nombreIgual);
+                    items.clear();
+                    //adapter.clear();
+                    items.add(nombreIgual);
+                    //adapter.notifyDataSetChanged();
+                    break;
+                }
+            }
+        }
     }
 
     private void refresh() {
@@ -101,28 +131,10 @@ http://media.blizzard.com/wow/icons/56/ability_mount_whitetiger.jpg */
     public void processFinish(String jsonPets) {
         this.jsonPets = jsonPets;
         pets = api.pasarPets(jsonPets);
-        for (Pet p : pets) {
+        /*for (Pet p : pets) {
             items.add(p.getName());
-        }
-        adapter.notifyDataSetChanged();
-
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String nombre = preferences.getString("buscador_nombre","nombre");
-        String nombreIgual = "";
-
-        if (!nombre.equalsIgnoreCase(nombre)) {
-            for (String s : items) {
-                if (nombre.equalsIgnoreCase(s)) {
-                    items.clear();
-                    nombreIgual = s;
-                    break;
-                }
-
-            }
-            items.add(nombreIgual);
-        }
-
-        adapter.notifyDataSetChanged();
+        }*/
+        petAdapter.notifyDataSetChanged();
 
     }
 }

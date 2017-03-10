@@ -4,6 +4,7 @@
     <string name="title_activity_settings">Settings</string>
 
     <string name="refresh_button_text">Refresh</string>
+    <string name="search_action">Buscar</string>
     <!-- Strings related to Settings -->
 
     <!-- Example General settings -->
@@ -81,7 +82,7 @@
     <string name="pref_header_buscador">Buscador</string>
 
     <string name="pref_title_buscador_nombre">Buscar por nombre</string>
-    <string name="pref_default_buscador_nombre">Ash\'ana</string>
+    <string name="pref_default_buscador_nombre">name</string>
 
 
 </resources>
