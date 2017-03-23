@@ -265,6 +265,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class BuscadorPreferenceFragment extends PreferenceFragment {
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {

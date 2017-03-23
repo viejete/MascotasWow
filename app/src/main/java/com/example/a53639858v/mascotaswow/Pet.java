@@ -1,7 +1,6 @@
 package com.example.a53639858v.mascotaswow;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class Pet implements Serializable {
 

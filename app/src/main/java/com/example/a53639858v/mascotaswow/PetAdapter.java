@@ -10,7 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -35,8 +35,19 @@ public class PetAdapter extends ArrayAdapter<Pet> {
         TextView tvName = (TextView) convertView.findViewById(R.id.tvPet);
         ImageView ivPet = (ImageView) convertView.findViewById(R.id.imageRow);
 
-        tvName.setText(pet.getName());
-        Glide.with(getContext()).load("http://media.blizzard.com/wow/icons/56/"+pet.getIcon()+".jpg").into(ivPet);
+        try {
+            tvName.setText(pet.getName());
+            Picasso.with(getContext())
+                    .load("http://media.blizzard.com/wow/icons/56/"+pet.getIcon()+".jpg")
+                    .resize(130 , 130)
+                    .centerCrop()
+                    .into(ivPet);
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+
 
         return convertView;
 

@@ -19,7 +19,6 @@ public class PetsAPI {
 
         Uri builtUri = Uri.parse(BASE_URL)
                 .buildUpon()
-                //.appendPath(API_KEY)
                 .build();
 
         String url = builtUri.toString();
@@ -67,6 +66,8 @@ public class PetsAPI {
                 stat.setHealth(jsonStats.getInt("health"));
                 stat.setPower(jsonStats.getInt("power"));
                 stat.setSpeed(jsonStats.getInt("speed"));
+
+                pet.setStats(stat);
 
                 pets.add(pet);
             }

@@ -13,8 +13,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.databinding.DataBindingUtil;
+
+import com.example.a53639858v.mascotaswow.databinding.FragmentMainBinding;
 
 import java.util.ArrayList;
 
@@ -22,17 +25,9 @@ public class MainActivityFragment extends Fragment implements AsyncResponse {
 
     private View view;
     ListView lvPets;
-    private ArrayList<String> items = new ArrayList<>();
     private ArrayList<Pet> pets;
-    private String jsonPets;
     private PetAdapter petAdapter;
     PetsAPI api = new PetsAPI();
-
-    /* http://media.blizzard.com/wow/icons/18/inv_helm_mail_raidhunter_q_01.jpg
-http://media.blizzard.com/wow/icons/36/inv_helm_mail_raidhunter_q_01.jpg
-http://media.blizzard.com/wow/icons/56/ability_mount_whitetiger.jpg */
-
-
 
     public MainActivityFragment() {
     }
@@ -53,22 +48,25 @@ http://media.blizzard.com/wow/icons/56/ability_mount_whitetiger.jpg */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_main, container, false);
 
-        lvPets = (ListView) view.findViewById(R.id.lvPets);
+        FragmentMainBinding binding = DataBindingUtil.inflate(inflater , R.layout.fragment_main , container , false);
+        view = binding.getRoot();
 
-        /*adapter = new ArrayAdapter<>(
-                getContext(),
-                R.layout.lv_pets_row,
-                R.id.tvPet,
-                items
-        );*/
+        //lvPets = (ListView) view.findViewById(R.id.lvPets);
 
         pets = new ArrayList<>();
         petAdapter = new PetAdapter(getContext() , R.layout.lv_pets_row , pets);
-        lvPets.setAdapter(petAdapter);
+        binding.lvPets.setAdapter(petAdapter);
 
-        //lvPets.setAdapter(adapter);
+        binding.lvPets.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Pet pet = (Pet) parent.getItemAtPosition(position);
+                Intent i = new Intent(getContext() , DetailActivity.class);
+                i.putExtra("pet" , pet);
+                startActivity(i);
+            }
+        });
 
         return view;
     }
@@ -95,28 +93,27 @@ http://media.blizzard.com/wow/icons/56/ability_mount_whitetiger.jpg */
     @Override
     public void onStart() {
         super.onStart();
-        //refresh();
+        refresh();
     }
 
     private void refreshPreferences() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         String nombre = preferences.getString("buscador_nombre" , "nombre");
         Log.i("Nombre pet: " , nombre);
-        String nombreIgual = "";
+        ArrayList<Pet> petsFinded = new ArrayList<>();
 
         if (!nombre.equalsIgnoreCase("nombre")) {
             Log.i("Entra aqui -> " , "si");
-            for (String s : items) {
-                if (nombre.equalsIgnoreCase(s)) {
-                    nombreIgual = s;
-                    Log.i("Nombre igual: " , nombreIgual);
-                    items.clear();
-                    //adapter.clear();
-                    items.add(nombreIgual);
-                    //adapter.notifyDataSetChanged();
-                    break;
+            for (Pet p : pets) {
+                if (p.getName().contains(nombre)) {
+                    petsFinded.add(p);
                 }
             }
+            petAdapter.clear();
+            for (Pet p : petsFinded) {
+                petAdapter.add(p);
+            }
+            petAdapter.notifyDataSetChanged();
         }
     }
 
@@ -129,11 +126,10 @@ http://media.blizzard.com/wow/icons/56/ability_mount_whitetiger.jpg */
 
     @Override
     public void processFinish(String jsonPets) {
-        this.jsonPets = jsonPets;
         pets = api.pasarPets(jsonPets);
-        /*for (Pet p : pets) {
-            items.add(p.getName());
-        }*/
+        for (Pet p : pets) {
+            petAdapter.add(p);
+        }
         petAdapter.notifyDataSetChanged();
 
     }

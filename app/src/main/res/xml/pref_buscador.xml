@@ -6,6 +6,9 @@
         android:defaultValue="@string/pref_default_buscador_nombre"
         android:selectAllOnFocus="true"
         android:singleLine="true"
+        android:inputType="text"
+        android:maxLines="1"
         android:title="@string/pref_title_buscador_nombre"
         android:key="buscador_nombre" />
+
 </PreferenceScreen>

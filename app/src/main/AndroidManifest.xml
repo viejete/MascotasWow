@@ -28,6 +28,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.a53639858v.mascotaswow.MainActivity" />
         </activity>
+        <activity android:name=".DetailActivity"></activity>
     </application>
 
 </manifest>

@@ -5,6 +5,9 @@
 
     <string name="refresh_button_text">Refresh</string>
     <string name="search_action">Buscar</string>
+
+    <!-- Detail Activity strings -->
+    <string name="stats_detail">Stats</string>
     <!-- Strings related to Settings -->
 
     <!-- Example General settings -->

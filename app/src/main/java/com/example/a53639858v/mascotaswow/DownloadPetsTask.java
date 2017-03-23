@@ -21,7 +21,7 @@ public class DownloadPetsTask extends AsyncTask<Context, Void , String> {
         PetsAPI api = new PetsAPI();
         String result = api.getPets();
 
-        Log.i("Mascotas" , result);
+        //Log.i("Mascotas" , result);
 
         return result;
     }
