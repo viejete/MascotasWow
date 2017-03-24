@@ -14,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.databinding.DataBindingUtil;
 
 import com.example.a53639858v.mascotaswow.databinding.FragmentMainBinding;
@@ -24,7 +23,6 @@ import java.util.ArrayList;
 public class MainActivityFragment extends Fragment implements AsyncResponse {
 
     private View view;
-    ListView lvPets;
     private ArrayList<Pet> pets;
     private PetAdapter petAdapter;
     PetsAPI api = new PetsAPI();
@@ -51,8 +49,6 @@ public class MainActivityFragment extends Fragment implements AsyncResponse {
 
         FragmentMainBinding binding = DataBindingUtil.inflate(inflater , R.layout.fragment_main , container , false);
         view = binding.getRoot();
-
-        //lvPets = (ListView) view.findViewById(R.id.lvPets);
 
         pets = new ArrayList<>();
         petAdapter = new PetAdapter(getContext() , R.layout.lv_pets_row , pets);
