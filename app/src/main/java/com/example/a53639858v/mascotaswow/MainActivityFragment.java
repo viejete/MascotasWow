@@ -86,12 +86,6 @@ public class MainActivityFragment extends Fragment implements AsyncResponse {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        refresh();
-    }
-
     private void refreshPreferences() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         String nombre = preferences.getString("buscador_nombre" , "nombre");
@@ -123,6 +117,7 @@ public class MainActivityFragment extends Fragment implements AsyncResponse {
     @Override
     public void processFinish(String jsonPets) {
         pets = api.pasarPets(jsonPets);
+        petAdapter.clear();
         for (Pet p : pets) {
             petAdapter.add(p);
         }
